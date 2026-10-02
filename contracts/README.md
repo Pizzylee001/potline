@@ -36,7 +36,7 @@ forge build
 forge test -vv
 ```
 
-## Deploy (Task 2, not done yet)
+## Deploy (Task 2, completed)
 
 ```shell
 cd contracts
@@ -44,20 +44,20 @@ set -a; source .env; set +a
 forge script script/Deploy.s.sol:DeployScript \
   --rpc-url "$ARB_SEPOLIA_RPC_URL" \
   --private-key "$PRIVATE_KEY" \
-  --broadcast \
-  --verify \
-  --etherscan-api-key "$ARBISCAN_API_KEY"
+  --broadcast
 ```
+
+Then create a sample circle and verify on Arbiscan. See the deployed addresses below.
 
 ## Deployed addresses
 
-Placeholders. Filled in Task 2.
+Deployed to Arbitrum Sepolia. Factory deployed by `0x65be7B4E45E3E7fd415865540407fb021937f5A3`.
 
 | Contract | Network | Address |
 | --- | --- | --- |
 | USDG (token, provided) | Arbitrum Sepolia | `0xFFC95faa3d63Cde504a05B567C600B78C0b41892` |
-| PotlineFactory | Arbitrum Sepolia | `TBD` |
-| Example SavingsCircle | Arbitrum Sepolia | `TBD` |
+| PotlineFactory | Arbitrum Sepolia | `0xBE7c2Ec0Fa8B4D0B6523bC3e8D3325409Fc78d23` ([Arbiscan](https://sepolia.arbiscan.io/address/0xBE7c2Ec0Fa8B4D0B6523bC3e8D3325409Fc78d23)) |
+| Example SavingsCircle | Arbitrum Sepolia | `0x42fD10a725b9D728faAC232EA407256747B897b1` ([Arbiscan](https://sepolia.arbiscan.io/address/0x42fD10a725b9D728faAC232EA407256747B897b1)) |
 
 ## Token
 
