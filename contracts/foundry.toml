@@ -1,0 +1,21 @@
+[profile.default]
+src = "src"
+test = "test"
+script = "script"
+out = "out"
+libs = ["lib"]
+solc = "0.8.30"
+optimizer = true
+optimizer_runs = 200
+remappings = [
+    "forge-std/=lib/forge-std/src/",
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+]
+
+# Arbitrum Sepolia RPC endpoint. ARB_SEPOLIA_RPC_URL is read from contracts/.env.
+[rpc_endpoints]
+arb_sepolia = "${ARB_SEPOLIA_RPC_URL}"
+
+# Arbiscan contract verification. ARBISCAN_API_KEY is read from contracts/.env.
+[etherscan]
+arbitrum-sepolia = { key = "${ARBISCAN_API_KEY}", chain = 421614, url = "https://api-sepolia.arbiscan.io/api" }

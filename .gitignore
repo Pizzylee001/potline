@@ -1,0 +1,17 @@
+# Secrets. Never commit real values.
+.env
+.env.*
+!.env.example
+
+# Foundry build output and deploy artifacts
+out/
+cache/
+broadcast/
+
+# Node
+node_modules/
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+*.log
