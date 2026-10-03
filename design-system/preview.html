@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Potline design preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink-950:#0A0C11;
+    --ink-900:#0F131A;
+    --ink-850:#131924;
+    --line:rgba(236,236,239,0.09);
+    --line-strong:rgba(236,236,239,0.17);
+    --text:#ECECEF;
+    --text-muted:#9AA1AD;
+    --brass:#D9A441;
+    --brass-wash:rgba(217,164,65,0.12);
+    --mint:#5FD08A;
+    --r-block:14px;
+    --r-control:9px;
+    --r-chip:999px;
+    --sans:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --ease-out:cubic-bezier(0.23,1,0.32,1);
+    --gutter:clamp(18px, 4vw, 56px);
+    --maxw:1440px;
+    --label-col:132px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{overflow-x:hidden}
+  body{
+    background:#07080B;
+    color:var(--text);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    font-feature-settings:"tnum" 1;
+    padding:40px var(--gutter) 72px;
+    overflow-x:hidden;
+  }
+
+  /* page-level meta header (not part of the product) */
+  .meta{max-width:var(--maxw);margin:0 auto 28px}
+  .meta .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted)}
+  .meta h1{margin:8px 0 6px;font-size:24px;font-weight:900;letter-spacing:-0.02em}
+  .meta p{margin:0;color:var(--text-muted);font-size:14px;max-width:70ch;line-height:1.55;text-wrap:pretty}
+
+  /* each route is its own framed page, so repeated nav reads as intentional */
+  .frame{
+    max-width:var(--maxw);
+    margin:0 auto 30px;
+    border:1px solid var(--line-strong);
+    border-radius:var(--r-block);
+    overflow:hidden;
+    background:var(--ink-950);
+  }
+  .frame-bar{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:10px 16px;
+    background:#0B0E13;
+    border-bottom:1px solid var(--line-strong);
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--text-muted);
+  }
+  .frame-bar .route{color:var(--text)}
+  .frame-bar .route b{color:var(--brass);font-weight:700}
+  .frame-bar .tag{color:var(--text-muted)}
+
+  .screen{
+    position:relative;
+    width:100%;
+    padding:0 var(--gutter) 56px;
+    overflow:hidden;
+  }
+  .glow{
+    position:absolute;
+    z-index:0;
+    width:min(700px,80vw);height:min(700px,80vw);
+    right:-140px;top:-240px;
+    background:radial-gradient(circle at center,var(--brass-wash),transparent 62%);
+    pointer-events:none;
+  }
+  /* ledger rules live inside the screen now, not the whole document */
+  .screen::before{
+    content:"";
+    position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-image:repeating-linear-gradient(to bottom,transparent 0 31px,var(--line) 31px 32px);
+    opacity:.5;
+  }
+  /* keep real content above the background layers; glow stays absolute */
+  .screen > *:not(.glow){position:relative;z-index:1}
+
+  /* ---------- nav: N2 floating chip (one per page) ---------- */
+  .nav{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:24px 0 36px;
+    width:max-content;
+    max-width:100%;
+    flex-wrap:wrap;
+    padding:6px;
+    border:1px solid var(--line-strong);
+    border-radius:var(--r-chip);
+    background:rgba(15,19,26,0.72);
+    backdrop-filter:blur(8px);
+  }
+  .nav a{
+    font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+    text-decoration:none;color:var(--text-muted);
+    padding:8px 14px;border-radius:var(--r-chip);white-space:nowrap;
+  }
+  .nav a[aria-current="page"]{color:var(--ink-950);background:var(--brass);font-weight:700}
+  .nav .brand{
+    font-family:var(--sans);font-weight:900;letter-spacing:-0.02em;
+    color:var(--text);padding-left:12px;padding-right:8px;font-size:15px;
+  }
+  .nav .wallet{
+    margin-left:6px;font-family:var(--mono);font-size:12px;color:var(--mint);
+    border:1px solid var(--line-strong);padding:8px 14px;border-radius:var(--r-chip);white-space:nowrap;
+  }
+
+  /* ---------- ledger header ---------- */
+  .ledger-head{
+    display:grid;grid-template-columns:var(--label-col) minmax(0,1fr);
+    align-items:baseline;gap:0 24px;padding-bottom:18px;border-bottom:1px solid var(--line-strong);
+  }
+  .margin-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+  h2.title{margin:0;font-size:clamp(26px,3.4vw,34px);font-weight:900;letter-spacing:-0.025em;line-height:1.08;text-wrap:balance}
+  .head-sub{grid-column:2;margin:8px 0 0;color:var(--text-muted);font-size:15px;max-width:62ch;text-wrap:pretty}
+
+  /* ---------- explore ---------- */
+  .toolbar{display:grid;grid-template-columns:var(--label-col) minmax(0,1fr);gap:0 24px;margin:22px 0 6px;align-items:center}
+  .tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .search{flex:1 1 260px;max-width:360px;display:flex;align-items:center;gap:10px;background:var(--ink-900);border:1px solid var(--line-strong);border-radius:var(--r-control);padding:9px 12px}
+  .search input{all:unset;color:var(--text);font-family:var(--mono);font-size:13px;width:100%;min-width:0}
+  .search input::placeholder{color:var(--text-muted)}
+  .chip{font-family:var(--mono);font-size:12px;color:var(--text-muted);border:1px solid var(--line-strong);border-radius:var(--r-chip);padding:7px 13px;white-space:nowrap}
+  .chip.on{color:var(--text);border-color:var(--brass);background:var(--brass-wash)}
+
+  .tablewrap{width:100%;overflow-x:auto;margin-top:14px}
+  table.index{width:100%;min-width:680px;border-collapse:collapse;font-size:15px}
+  table.index th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);font-weight:500;text-align:left;padding:12px 14px;border-bottom:1px solid var(--line-strong);white-space:nowrap}
+  table.index td{padding:18px 14px;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
+  table.index tbody tr{transition:background-color .18s var(--ease-out)}
+  table.index tbody tr:hover{background:var(--ink-900)}
+  .circle-name{font-weight:700;font-size:16px;letter-spacing:-0.01em}
+  .muted{color:var(--text-muted)}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .status{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border-radius:var(--r-chip);border:1px solid var(--line-strong);color:var(--text-muted);display:inline-block;white-space:nowrap}
+  .status.open{color:var(--mint);border-color:rgba(95,208,138,.4)}
+  .status.drawing{color:var(--brass);border-color:rgba(217,164,65,.45)}
+  .status.done{color:var(--text-muted);opacity:.75}
+
+  /* ---------- circle detail ---------- */
+  .detail{display:grid;grid-template-columns:var(--label-col) minmax(0,1fr) 400px;gap:0 34px;margin-top:26px}
+  .wheel-zone{position:relative;grid-column:2;width:100%;max-width:620px;margin:0 auto;aspect-ratio:1 / 0.92;min-height:400px}
+  .ring{position:absolute;inset:6% 8%;border:1px dashed var(--line-strong);border-radius:50%}
+  .node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;width:104px}
+  .avatar{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:15px;background:var(--ink-850);color:var(--text-muted);border:1px solid var(--line-strong)}
+  .node .who{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);text-align:center;white-space:nowrap}
+  .node.now .avatar{background:var(--brass);color:#241a05;border-color:var(--brass);box-shadow:0 10px 30px rgba(217,164,65,.22)}
+  .node.now .who{color:var(--brass)}
+  .node.paid .avatar{border-color:rgba(95,208,138,.5);color:var(--mint)}
+  .node.paid .who{color:var(--mint)}
+  .pot{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:44%;max-width:238px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 38%,#1c2331,var(--ink-900) 70%);border:1px solid var(--line-strong);display:grid;place-content:center;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.04)}
+  .pot .amount{font-size:clamp(34px,4.6vw,56px);font-weight:900;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;line-height:1}
+  .pot .unit{font-family:var(--mono);font-size:13px;color:var(--brass);letter-spacing:.14em;margin-top:2px}
+  .pot .cap{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted);margin-top:12px}
+
+  .panel{grid-column:3}
+  .card{background:var(--ink-900);border:1px solid var(--line-strong);border-radius:var(--r-block);padding:20px;margin-bottom:18px}
+  .card h3{margin:0 0 4px;font-size:16px;font-weight:700;letter-spacing:-0.01em}
+  .card .hint{margin:0 0 16px;color:var(--text-muted);font-size:13px;line-height:1.5;text-wrap:pretty}
+  .field{display:flex;gap:8px;flex-wrap:wrap}
+  .field input{all:unset;flex:1 1 150px;min-width:0;background:var(--ink-950);border:1px solid var(--line-strong);border-radius:var(--r-control);padding:12px 13px;font-family:var(--mono);font-size:14px;color:var(--text)}
+  .field input::placeholder{color:var(--text-muted)}
+  .btn{font-family:var(--sans);font-weight:700;font-size:14px;border-radius:var(--r-control);padding:12px 16px;border:1px solid var(--line-strong);background:transparent;color:var(--text);cursor:pointer;transition:transform .12s var(--ease-out),border-color .18s var(--ease-out),background-color .18s var(--ease-out)}
+  .btn:active{transform:scale(.97)}
+  .btn.primary{background:var(--brass);border-color:var(--brass);color:#241a05}
+  .btn.primary:hover{background:#E3B255}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+  .btn.full{width:100%;margin-top:10px}
+  .kv{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .kv:last-child{border-bottom:0}
+  .kv .k{color:var(--text-muted)}
+  .kv .num{text-align:right}
+  .reason{font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:8px;line-height:1.5}
+
+  .ledger{grid-column:2 / 4;margin-top:34px;border-top:1px solid var(--line-strong);overflow-x:auto}
+  table.rounds{width:100%;min-width:640px;border-collapse:collapse;font-size:14px}
+  table.rounds th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);font-weight:500;text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+  table.rounds td{padding:15px 14px;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
+  tr.this{background:var(--brass-wash)}
+  tr.this td:first-child{box-shadow:inset 3px 0 0 var(--brass)}
+
+  /* ---------- receipts ---------- */
+  .receipt{display:grid;grid-template-columns:var(--label-col) minmax(0,1fr);gap:0 24px;margin-top:26px}
+  .empty{border:1px dashed var(--line-strong);border-radius:var(--r-block);padding:44px 40px;background:var(--ink-900);max-width:620px}
+  .empty h3{margin:0 0 8px;font-size:19px;font-weight:700}
+  .empty p{margin:0 0 20px;color:var(--text-muted);font-size:14px;line-height:1.55;max-width:48ch;text-wrap:pretty}
+  .empty .btn{text-decoration:none;display:inline-block}
+
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--text-muted);letter-spacing:.04em}
+
+  @media (max-width:1100px){
+    .detail{grid-template-columns:1fr}
+    .wheel-zone{grid-column:1;max-width:560px}
+    .panel{grid-column:1;margin-top:24px}
+    .ledger{grid-column:1}
+  }
+  @media (max-width:768px){
+    .ledger-head,.toolbar,.receipt{grid-template-columns:1fr;gap:8px 0}
+    .head-sub{grid-column:1}
+    .nav{margin-top:20px}
+    .empty{padding:32px 24px}
+    .wheel-zone{min-height:340px}
+    .node{width:76px}
+    .avatar{width:42px;height:42px;font-size:13px}
+    .node .who{font-size:9px}
+  }
+  @media (max-width:520px){
+    .nav{gap:4px}
+    .nav a,.nav .wallet{font-size:11px;padding:7px 10px}
+    .nav .brand{font-size:14px;padding-left:8px}
+    .node{width:64px}
+    .avatar{width:36px;height:36px;font-size:12px}
+  }
+</style>
+</head>
+<body>
+
+<div class="meta">
+  <div class="kicker">Potline, design preview</div>
+  <h1>Three routes, one shared layout</h1>
+  <p>Each frame below is a separate page. The nav and wallet appear once per page, the same shared layout across routes. Figures are labeled sample data, not real balances.</p>
+</div>
+
+<!-- ROUTE 1 -->
+<section class="frame">
+  <div class="frame-bar"><span class="route">Route <b>/</b> Explore circles</span><span class="tag">Sample data</span></div>
+  <div class="screen">
+    <div class="glow"></div>
+    <nav class="nav">
+      <span class="brand">Potline</span>
+      <a href="#" aria-current="page">Circles</a>
+      <a href="#">Create</a>
+      <a href="#">Receipts</a>
+      <span class="wallet">0x7f...4a91 connected</span>
+    </nav>
+    <header class="ledger-head">
+      <span class="margin-label">Circles</span>
+      <h2 class="title">Your savings circles</h2>
+      <p class="head-sub">Contribute each round. Bid to take the pot early. Everyone sees the same ledger.</p>
+    </header>
+    <div class="toolbar">
+      <span class="margin-label">Filter</span>
+      <div class="tools">
+        <div class="search"><input placeholder="Search circles" aria-label="Search circles" /></div>
+        <span class="chip on">All</span><span class="chip">Open</span><span class="chip">Drawing</span><span class="chip">Complete</span>
+      </div>
+    </div>
+    <div class="tablewrap">
+      <table class="index">
+        <thead><tr><th>Circle</th><th>Members</th><th>Per round</th><th>Round</th><th>Status</th><th>Pot this round</th></tr></thead>
+        <tbody>
+          <tr><td class="circle-name">Kampung Fund</td><td class="num">6 / 6</td><td class="num">50 USDG</td><td class="num">3 of 6</td><td><span class="status drawing">Drawing</span></td><td class="num">300 USDG</td></tr>
+          <tr><td class="circle-name">OFW Paluwagan</td><td class="num">8 / 8</td><td class="num">25 USDG</td><td class="num">5 of 8</td><td><span class="status open">Open</span></td><td class="num">200 USDG</td></tr>
+          <tr><td class="circle-name">Tandas Kawan</td><td class="num">4 / 6</td><td class="num">50 USDG</td><td class="num muted">Not started</td><td><span class="status">Forming</span></td><td class="num muted">0 USDG</td></tr>
+          <tr><td class="circle-name">Office Arisan</td><td class="num">12 / 12</td><td class="num">100 USDG</td><td class="num">12 of 12</td><td><span class="status done">Complete</span></td><td class="num muted">Settled</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="foot"><span>Ledger, Arbitrum Sepolia</span><span>4 circles, 30 members</span></div>
+  </div>
+</section>
+
+<!-- ROUTE 2 -->
+<section class="frame">
+  <div class="frame-bar"><span class="route">Route <b>/circle/[address]</b> Circle detail</span><span class="tag">Sample data</span></div>
+  <div class="screen">
+    <div class="glow"></div>
+    <nav class="nav">
+      <span class="brand">Potline</span>
+      <a href="#" aria-current="page">Circles</a>
+      <a href="#">Create</a>
+      <a href="#">Receipts</a>
+      <span class="wallet">0x7f...4a91 connected</span>
+    </nav>
+    <header class="ledger-head">
+      <span class="margin-label">Circle</span>
+      <h2 class="title">Kampung Fund</h2>
+      <p class="head-sub">6 members, 50 USDG per round, Round 3 of 6. Highest bid takes the pot, and the bid is shared back to the others.</p>
+    </header>
+    <div class="detail">
+      <span class="margin-label" style="padding-top:10px">Turn order</span>
+      <div class="wheel-zone">
+        <div class="ring"></div>
+        <div class="node paid" style="left:50%;top:8%"><div class="avatar">MA</div><div class="who">Maya, paid R1</div></div>
+        <div class="node now" style="left:86%;top:29%"><div class="avatar">SI</div><div class="who">Siti, now</div></div>
+        <div class="node" style="left:86%;top:71%"><div class="avatar">DA</div><div class="who">Dara</div></div>
+        <div class="node" style="left:50%;top:92%"><div class="avatar">JO</div><div class="who">Jomar</div></div>
+        <div class="node" style="left:14%;top:71%"><div class="avatar">YO</div><div class="who">You, turn 5</div></div>
+        <div class="node paid" style="left:14%;top:29%"><div class="avatar">BE</div><div class="who">Ben, paid R2</div></div>
+        <div class="pot"><div class="amount">300</div><div class="unit">USDG</div><div class="cap">Pot this round</div></div>
+      </div>
+      <div class="panel">
+        <div class="card">
+          <h3>Take the pot early</h3>
+          <p class="hint">Bid how much of the pot you will give up to receive it now. The highest bid wins, and the bid is shared back to the other members.</p>
+          <div class="field"><input placeholder="Your bid in USDG" aria-label="Your bid in USDG" /><button class="btn">Place bid</button></div>
+          <div class="kv" style="margin-top:14px"><span class="k">Top bid now</span><span class="num">40 USDG by Maya</span></div>
+          <div class="reason">Bids close when the round is full.</div>
+        </div>
+        <div class="card">
+          <div class="kv"><span class="k">Your contribution this round</span><span class="num">50 USDG</span></div>
+          <div class="kv"><span class="k">Your turn</span><span class="num">5 of 6</span></div>
+          <div class="kv"><span class="k">Pooled over 2 rounds</span><span class="num">600 USDG</span></div>
+          <button class="btn primary full">Contribute 50 USDG</button>
+          <button class="btn full" disabled aria-disabled="true">Claim pot</button>
+          <div class="reason">Claim unlocks on your turn, after your contribution clears.</div>
+        </div>
+      </div>
+      <div class="ledger">
+        <table class="rounds">
+          <thead><tr><th>Round</th><th>Recipient</th><th>Paid in</th><th>Winning bid</th><th>Pot received</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="num">R1</td><td>Maya</td><td class="num">6 / 6</td><td class="num">30 USDG</td><td class="num">270 USDG</td><td><span class="status done">Settled</span></td></tr>
+            <tr><td class="num">R2</td><td>Ben</td><td class="num">6 / 6</td><td class="num muted">No bids</td><td class="num">300 USDG</td><td><span class="status done">Settled</span></td></tr>
+            <tr class="this"><td class="num">R3</td><td>Siti</td><td class="num">4 / 6</td><td class="num">40 USDG</td><td class="num muted">Drawing</td><td><span class="status drawing">Drawing</span></td></tr>
+            <tr><td class="num">R4</td><td>Dara</td><td class="num muted">-</td><td class="num muted">-</td><td class="num muted">-</td><td><span class="status">Upcoming</span></td></tr>
+            <tr><td class="num">R5</td><td>You</td><td class="num muted">-</td><td class="num muted">-</td><td class="num muted">-</td><td><span class="status">Upcoming</span></td></tr>
+            <tr><td class="num">R6</td><td>Jomar</td><td class="num muted">-</td><td class="num muted">-</td><td class="num muted">-</td><td><span class="status">Upcoming</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROUTE 3 -->
+<section class="frame">
+  <div class="frame-bar"><span class="route">Route <b>/receipts</b> Completed circles</span><span class="tag">Sample data</span></div>
+  <div class="screen">
+    <nav class="nav">
+      <span class="brand">Potline</span>
+      <a href="#">Circles</a>
+      <a href="#">Create</a>
+      <a href="#" aria-current="page">Receipts</a>
+      <span class="wallet">0x7f...4a91 connected</span>
+    </nav>
+    <header class="ledger-head">
+      <span class="margin-label">Receipts</span>
+      <h2 class="title">Completed circles</h2>
+      <p class="head-sub">Every finished circle leaves a receipt you can keep and share.</p>
+    </header>
+    <div class="receipt">
+      <span class="margin-label" style="padding-top:4px">Empty state</span>
+      <div class="empty">
+        <h3>No completed circles yet</h3>
+        <p>Finish a circle and its full ledger lands here: rounds, bids, and what you paid in against what you took out.</p>
+        <a class="btn primary" href="#">Create a circle</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
