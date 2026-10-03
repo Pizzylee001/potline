@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/* Potline design tokens. Source of truth: design-system/DESIGN.md.
+   Raw values live on :root so plain CSS can read them, then they are mapped
+   into Tailwind with @theme inline so utilities and raw vars stay in sync. */
+:root {
+  color-scheme: dark;
+
+  --ink: #0a0c11;
+  --surface: #0f131a;
+  --surface-raised: #131924;
+  --brass: #d9a441;
+  --brass-ink: #241a05;
+  --mint: #5fd08a;
+  --destructive: #f07a7a;
+  --text: #ececef;
+  --muted: #9aa1ad;
+  --hairline: rgba(236, 236, 239, 0.09);
+  --hairline-strong: rgba(236, 236, 239, 0.17);
+  --glow: rgba(217, 164, 65, 0.12);
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-brass: var(--brass);
+  --color-brass-ink: var(--brass-ink);
+  --color-mint: var(--mint);
+  --color-destructive: var(--destructive);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-glow: var(--glow);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --radius-block: 14px;
+  --radius-control: 9px;
+  --radius-chip: 999px;
+
+  --text-display: 34px;
+  --text-h2: 19px;
+  --text-h3: 16px;
+  --text-body: 15px;
+  --text-small: 13px;
+  --text-label: 11px;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--ink);
+    color: var(--text);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brass);
+    outline-offset: 2px;
+  }
+}
+
+/* One fixed, non-scrolling ground: horizontal ledger rules every 32px at 9 percent. */
+.bg-ledger-rules {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--hairline) 0px,
+    var(--hairline) 1px,
+    transparent 1px,
+    transparent 32px
+  );
+}
+
+/* The single focal light: a soft brass radial glow behind the pot zone. */
+.pot-glow {
+  background-image: radial-gradient(
+    60% 46% at 50% 30%,
+    var(--glow) 0%,
+    transparent 70%
+  );
+}
+
+/* Money and counts always read as figures. */
+.figure {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}

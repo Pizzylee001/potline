@@ -1,0 +1,21 @@
+# dependencies (no trailing slash: these may be symlinks in this environment)
+node_modules
+
+# next.js build output
+.next
+out
+build
+
+# local env files (never commit real values)
+.env.local
+.env*.local
+.env
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# os and editor noise
+.DS_Store
+Thumbs.db
+*.log
