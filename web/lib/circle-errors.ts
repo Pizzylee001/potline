@@ -65,6 +65,12 @@ function usdg(value: unknown): string {
   return formatUsdg(value);
 }
 
+/** Member counts are plain integers, never token amounts. */
+function count(value: unknown): string {
+  if (typeof value !== "bigint") return "0";
+  return value.toString();
+}
+
 /**
  * Turn a decoded revert into interface copy that names the cause and the fix.
  * Each line reads as what happened then what to do about it.
@@ -84,7 +90,7 @@ export function revertCopy(revert: DecodedRevert): string {
     case "AlreadyContributed":
       return "This address already paid this round.";
     case "RoundNotFull":
-      return `Round not full: ${usdg(revert.args[0])} of ${usdg(revert.args[1])} members have paid. Wait for the rest to contribute.`;
+      return `Round not full: ${count(revert.args[0])} of ${count(revert.args[1])} members have paid. Wait for the rest to contribute.`;
     case "NoContributionThisRound":
       return "Contribute this round before placing a bid.";
     case "BidZero":
