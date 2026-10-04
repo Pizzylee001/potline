@@ -15,6 +15,11 @@ build
 *.tsbuildinfo
 next-env.d.ts
 
+# local validation scratch (command output, probe profile)
+*.txt
+!.env.example
+.chrome-probe
+
 # os and editor noise
 .DS_Store
 Thumbs.db

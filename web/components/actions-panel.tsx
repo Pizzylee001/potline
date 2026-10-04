@@ -8,6 +8,7 @@ import { erc20Abi, type Abi, type Address } from "viem";
 import { ArrowSquareOut, Spinner } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { savingsCircleAbi } from "@/lib/abis/savings-circle";
+import { inputClass } from "@/components/ui/field";
 import { loadCircleAccount, type CircleAccountState } from "@/lib/circle-account";
 import {
   bidValidation,
@@ -19,9 +20,6 @@ import { useCircleWrite } from "@/lib/use-circle-write";
 import { CHAIN_ID, EXPLORER_URL, USDG } from "@/lib/chain";
 import type { CircleData } from "@/lib/circle-data";
 import { formatUsdg } from "@/lib/format";
-
-const inputClass =
-  "w-full rounded-control border border-hairline-strong bg-surface px-3 py-2 font-mono text-body text-text placeholder:text-muted focus-visible:border-brass focus-visible:outline-none";
 
 /** The transaction link shown once a receipt confirms. */
 function TxLink({ hash }: { hash: string }) {
