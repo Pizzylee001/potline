@@ -27,10 +27,10 @@ export function CircleSkeleton() {
       <div
         role="status"
         aria-label="Loading circle"
-        className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[132px_minmax(0,1fr)_420px] lg:gap-8"
+        className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[132px_minmax(0,1fr)_300px] lg:gap-8 xl:grid-cols-[132px_minmax(0,1fr)_280px_300px]"
       >
-        <div aria-hidden className={`hidden h-3 w-16 lg:block ${pulse}`} />
-        <div className="relative mx-auto aspect-square w-full max-w-[520px]">
+        <div aria-hidden className={`hidden h-3 w-16 lg:col-start-1 lg:row-start-1 lg:block ${pulse}`} />
+        <div className="relative mx-auto aspect-square w-full max-w-[520px] lg:col-start-2 lg:row-start-1">
           <div aria-hidden className="absolute inset-0 rounded-chip border border-dashed border-hairline-strong" />
           <div aria-hidden className={`absolute top-1/2 left-1/2 size-28 -translate-x-1/2 -translate-y-1/2 rounded-chip ${pulse}`} />
           {[0, 1, 2, 3].map((i) => (
@@ -46,11 +46,25 @@ export function CircleSkeleton() {
             />
           ))}
         </div>
-        <div aria-hidden className="rounded-block border border-hairline-strong bg-surface p-5">
+        <div aria-hidden className="rounded-block border border-hairline-strong bg-surface p-5 lg:col-start-3 lg:row-start-1">
           <div className={`h-5 w-24 ${pulse}`} />
           <div className="mt-4 flex flex-col gap-3">
             {[0, 1, 2, 3, 4, 5].map((i) => (
               <div key={i} className={`h-4 w-full ${pulse}`} />
+            ))}
+          </div>
+        </div>
+        <div
+          aria-hidden
+          className="rounded-block border border-hairline-strong bg-surface p-5 lg:col-start-3 lg:row-start-2 xl:col-start-4 xl:row-start-1"
+        >
+          <div className={`h-5 w-28 ${pulse}`} />
+          <div className="mt-4 flex flex-col gap-3">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="flex flex-col gap-2">
+                <div className={`h-3 w-24 ${pulse}`} />
+                <div className={`h-10 w-full ${pulse}`} />
+              </div>
             ))}
           </div>
         </div>

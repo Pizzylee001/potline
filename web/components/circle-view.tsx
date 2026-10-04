@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import type { Address } from "viem";
 import { MemberList } from "@/components/member-list";
+import { ActionsPanel } from "@/components/actions-panel";
 import { PotPanel } from "@/components/pot-panel";
 import { Reveal } from "@/components/reveal";
 import { TurnOrderWheel } from "@/components/turn-order-wheel";
@@ -81,9 +82,11 @@ export function CircleView({ address }: { address: string }) {
         </div>
       </Reveal>
 
-      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[132px_minmax(0,1fr)_420px] lg:gap-8">
-        <MarginLabel>Turn order</MarginLabel>
-        <Reveal delay={0.05}>
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[132px_minmax(0,1fr)_300px] lg:gap-8 xl:grid-cols-[132px_minmax(0,1fr)_280px_300px]">
+        <div className="lg:col-start-1 lg:row-start-1">
+          <MarginLabel>Turn order</MarginLabel>
+        </div>
+        <Reveal delay={0.05} className="lg:col-start-2 lg:row-start-1">
           <TurnOrderWheel
             members={circle.members}
             turnAddress={turnAddress}
@@ -111,7 +114,7 @@ export function CircleView({ address }: { address: string }) {
             </li>
           </ul>
         </Reveal>
-        <Reveal delay={0.1}>
+        <Reveal delay={0.1} className="lg:col-start-3 lg:row-start-1">
           <PotPanel
             currentRound={circle.currentRound}
             maxMembers={circle.maxMembers}
@@ -129,6 +132,9 @@ export function CircleView({ address }: { address: string }) {
               Refreshing
             </p>
           ) : null}
+        </Reveal>
+        <Reveal delay={0.15} className="lg:col-start-3 lg:row-start-2 xl:col-start-4 xl:row-start-1">
+          <ActionsPanel circle={circle} />
         </Reveal>
       </div>
 
