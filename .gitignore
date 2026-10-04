@@ -18,3 +18,8 @@ Thumbs.db
 
 # Coding-agent scratch space
 .cline_tmp/
+
+# Headless browser scratch profiles used for render checks
+.edgeprofile/
+.edgeprofile2/
+.ep*/
