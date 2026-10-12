@@ -167,9 +167,10 @@ function SummaryCard({ row }: { row: CircleSummary }) {
 }
 
 /**
- * Read-only registry. Needs a connected wallet because membership is per
- * address. The registry and the per-circle reads are two queries so the list can
- * render its addresses before the heavier summary pass lands.
+ * Read-only registry. Public for everyone: the list renders without a
+ * wallet, and membership lights up per address once one is connected. The
+ * registry and the per-circle reads are two queries so the list can render
+ * its addresses before the heavier summary pass lands.
  */
 export function ReceiptsView() {
   const { address: connected, isConnected } = useAccount();
@@ -230,18 +231,18 @@ const rows = useMemo(() => summaries.data ?? [], [summaries.data]);
           {!you ? (
             <div className="rounded-block border border-hairline-strong bg-surface p-5">
               <p className="font-mono text-label uppercase tracking-[0.14em] text-muted">
-                Wallet needed
+                Read only until you connect
               </p>
               <p className="mt-2 text-body text-muted">
-                Connect your wallet to see which circles you belong to. Use the
-                Connect Wallet button in the header.
+                The registry below is public chain data. Connect your wallet to
+                see which circles you belong to.
               </p>
             </div>
           ) : null}
 
-          {you && loading ? <ReceiptsSkeleton /> : null}
+          {loading ? <ReceiptsSkeleton /> : null}
 
-          {you && failed ? (
+          {failed ? (
             <div className="rounded-block border border-hairline-strong bg-surface p-5">
               <p className="font-mono text-label uppercase tracking-[0.14em] text-destructive">
                 Load failed
@@ -269,7 +270,7 @@ const rows = useMemo(() => summaries.data ?? [], [summaries.data]);
             </div>
           ) : null}
 
-          {you && !loading && !failed && total === 0 ? (
+          {!loading && !failed && total === 0 ? (
             <div className="rounded-block border border-dashed border-hairline-strong p-6 md:p-8">
               <p className="font-mono text-label uppercase tracking-[0.14em] text-muted">
                 No circles yet
@@ -293,7 +294,7 @@ const rows = useMemo(() => summaries.data ?? [], [summaries.data]);
             </div>
           ) : null}
 
-          {you && !loading && !failed && total > 0 && summaries.isSuccess ? (
+          {!loading && !failed && total > 0 && summaries.isSuccess ? (
             <div>
               <div className="rounded-block border border-hairline-strong bg-surface p-5">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
