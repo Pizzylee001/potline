@@ -2,7 +2,7 @@
 
 Onchain group savings circles with a proper auction for early payout, settled in USDG on Arbitrum.
 
-Live app: `PENDING_DEPLOY`
+Live app: https://potline-three.vercel.app
 Contracts, both verified on Arbiscan: [PotlineFactory `0xBE7c…d23`](https://sepolia.arbiscan.io/address/0xBE7c2Ec0Fa8B4D0B6523bC3e8D3325409Fc78d23) and [demo SavingsCircle `0x42fD…7b1`](https://sepolia.arbiscan.io/address/0x42fD10a725b9D728faAC232EA407256747B897b1). Testnet, chain 421614.
 
 ![The Potline circle view](design-system/screenshots/circle-1440.png)
